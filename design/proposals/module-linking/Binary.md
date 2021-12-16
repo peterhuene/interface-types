@@ -80,13 +80,13 @@ Notes:
 
 (See [import definitions](Explainer.md#import-definitions) in the explainer.)
 ```
-import  ::= nm:<name> dt:<deftype> => (import nm dt)
-deftype ::= 0x00 x:typeidx         => (instance x)
-          | 0x01 x:typeidx         => (module x)
-          | 0x02 x:typeidx         => (func x)
-          | 0x03 tt:tabletype      => (table tt)
-          | 0x04 mt:memtype        => (memory mt)
-          | 0x05 gt:globaltype     => (global gt)
+import  ::= nm:<name> dt:<deftype>    => (import nm dt)
+deftype ::= 0x00 i:<typeidx>          => type-index-space[i] (must be (instance) type)
+          | 0x01 i:<typeidx>          => type-index-space[i] (must be (module) type)
+          | 0x02 i:<typeidx>          => type-index-space[i] (must be (func) type)
+          | 0x03 tt:<core:tabletype>  => tt
+          | 0x04 mt:<core:memtype>    => mt
+          | 0x05 gt:<core:globaltype> => gt
 ```
 Notes:
 * Unlike the text format, which allows module/instance/function types to be
@@ -94,8 +94,6 @@ Notes:
   separately as a type definition, referred to be type index.
 * The `nm` are validated to be unique; duplicate import names are not allowed
   in adapter modules.
-* The `typeidx` are validated against the type index space to match the
-  declared definition kind.
 
 
 ## Export Definitions
